@@ -208,6 +208,85 @@ class doublylinkedlist{
         cout<<slow->data<<endl;
     }
 
+    void nodeswap(int k) {
+        if (k <= 0) return; // Invalid position
+
+        Node<T> *first = head;
+        Node<T> *end = tail;
+        int count = 1;
+
+        // Find the k-th node from the start
+        while (first && count < k) {
+            first = first->next;
+            count++;
+        }
+
+        count = 1;
+        // Find the k-th node from the end
+        while (end && count < k) {
+            end = end->prev;
+            count++;
+        }
+
+        // If either node is null or they are the same, no need to swap
+        if (!first || !end || first == end) return;
+
+        // If nodes are adjacent
+        if (first->next == end) {
+            Node<T>* prevFirst = first->prev;
+            Node<T>* nextEnd = end->next;
+
+            // Swap adjacent nodes
+            if (prevFirst) {
+                prevFirst->next = end;
+            } else {
+                head = end; // Update head if first was head
+            }
+            end->prev = prevFirst;
+            end->next = first;
+            first->prev = end;
+            first->next = nextEnd;
+            if (nextEnd) {
+                nextEnd->prev = first;
+            } else {
+                tail = first; // Update tail if end was tail
+            }
+        } else {
+            // Nodes are not adjacent
+            Node<T>* prevFirst = first->prev;
+            Node<T>* nextFirst = first->next;
+            Node<T>* prevEnd = end->prev;
+            Node<T>* nextEnd = end->next;
+
+            // Swap nodes
+            if (prevFirst) {
+                prevFirst->next = end;
+            } else {
+                head = end; // Update head if first was head
+            }
+            if (prevEnd) {
+                prevEnd->next = first;
+            } else {
+                head = first; // Update head if end was head
+            }
+
+            first->next = nextEnd;
+            first->prev = prevEnd;
+            end->next = nextFirst;
+            end->prev = prevFirst;
+
+            if (nextEnd) {
+                nextEnd->prev = first;
+            } else {
+                tail = first; // Update tail if nextEnd was tail
+            }
+            if (nextFirst) {
+                nextFirst->prev = end;
+            } else {
+                tail = end; // Update tail if nextFirst was tail
+            }
+        }
+    }
 };
 
 int main(){
@@ -227,5 +306,6 @@ int main(){
     dll.insertatend(10);
     dll.print();
     dll.middleNode();
-
+    dll.nodeswap(2);
+    dll.print();
 }
