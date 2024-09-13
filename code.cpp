@@ -195,6 +195,19 @@ class doublylinkedlist{
         return false;
     }
 
+    void middleNode(){
+        Node<T> *fast=head;
+        Node<T> *slow=head;
+
+        while (fast && fast->next){
+            fast=fast->next;
+            slow=slow->next;
+            fast=fast->next;
+        }
+
+        cout<<slow->data<<endl;
+    }
+
 };
 
 int main(){
@@ -211,6 +224,8 @@ int main(){
     dll.insertBefore(6,10);
     dll.print();
     dll.reverseprint();
+    dll.insertatend(10);
     dll.print();
+    dll.middleNode();
 
 }
